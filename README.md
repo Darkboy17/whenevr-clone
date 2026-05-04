@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Whenevr Clone – Pixel-Perfect Framer Design (Next.js + React + Tailwind)
 
-## Getting Started
+## 🚀 Overview
+This project is a **pixel-perfect recreation** of the Whenevr landing page built using:
+- **Next.js (App Router)**
+- **React**
+- **Tailwind CSS**
+- **TypeScript**
 
-First, run the development server:
+The goal was to match the original Framer design as closely as possible, including:
+- Layout
+- Typography
+- Spacing
+- Animations
+- Hover states
+- Responsiveness
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🧩 Features
+
+- 🔥 Pixel-perfect UI replication from Framer
+- ⚡ Smooth animations (Framer-style easing)
+- 🎯 Scroll-based interactions
+- 📱 Fully responsive (mobile → desktop)
+- 🎞 Auto-scrolling marquee sections
+- 🎛 Interactive components (pricing toggle, buttons)
+- 🧠 Clean, reusable component architecture
+
+---
+
+## 🛠 Tech Stack
+
+- **Next.js 16 (App Router + Turbopack)**
+- **React**
+- **Tailwind CSS**
+- **TypeScript**
+- **next/image (optimized images)**
+
+---
+
+## 📁 Project Structure
+
+```
+/app
+  /page.tsx
+
+/components
+  /header
+  /hero
+  /pricing
+  /testimonials
+  /horizontalScroll
+  ...
+
+/lib
+  data.ts
+
+/public
+  /whenevr-assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Setup Instructions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Clone the repository
+```bash
+git clone https://github.com/Darkboy17/whenevr-clone
+cd whenevr-clone
+```
 
-## Learn More
+### 2. Install dependencies
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Run development server
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Visit:
+```
+http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## ⚠️ Important Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Images (Framer CDN)
+If using external images (e.g. framerusercontent.com), ensure:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```js
+// next.config.js
+images: {
+  remotePatterns: [
+    {
+      protocol: "https",
+      hostname: "framerusercontent.com",
+    },
+  ],
+}
+```
+
+---
+
+## 🎨 Design Fidelity Notes
+
+- Typography matches **Inter Variable**
+- Custom easing: `cubic-bezier(0.22, 1, 0.36, 1)`
+- Exact spacing & border radii replicated
+- Masking & blur effects matched from Framer
+- Hover animations implemented with dual-layer text transitions
+
+---
+
+## 🧠 Learnings
+
+- Handling Framer → Tailwind conversion
+- Precision UI recreation
+- Advanced CSS masking & layering
+- Scroll-based animation logic
+- Performance optimization with `will-change`
+
+---
+
+## 📌 Live Demo
+
+Add your deployed link here:
+```
+https://whenevr-clone-alpha.vercel.app/
+```
+
+---
+
+## 🙌 Acknowledgements
+
+Design inspiration from:
+- Whenevr (Framer website)
+
+---
+
+## 🧑‍💻 Author
+
+**Kordor Pyrbot**
