@@ -1,65 +1,152 @@
-import Image from "next/image";
+"use client";
 
+import IntroContentGate from "@/components/layout/IntroContentGate";
+import ScrollReveal from "@/components/behavior/ScrollReveal";
+
+import Header from "@/components/header/Header";
+import Hero from "@/components/hero/Hero";
+import Logos from "@/components/logos/Logos";
+import HowItWorks from "@/components/how-It-works/HowItWorks";
+import WorkGrid from "@/components/work-grid/WorkGrid";
+import HorizontalScroll from "@/components/horizontal-scroll/HorizontalScroll";
+import Features from "@/components/features/Features";
+import Testimonials from "@/components/testimonials/Testimonials";
+
+import Pricing from "@/components/pricing/Pricing";
+import Blog from "@/components/blog/Blog";
+import FAQ from "@/components/faq/FAQ";
+import Footer from "@/components/footer/Footer";
+import { useEffect, useState } from "react";
+
+/**
+ * Home Page
+ *
+ * This is the main landing page composition layer.
+ *
+ * Responsibilities:
+ * - orchestrates section layout and ordering
+ * - controls intro gating (IntroContentGate)
+ * - applies scroll-based reveal animations (ScrollReveal)
+ * - tracks visibility of HorizontalScroll to inform Header behavior
+ *
+ * This file should remain a **pure composition layer**:
+ * - no heavy logic
+ * - no UI implementation details
+ * - only layout + cross-section coordination
+ */
 export default function Home() {
+  /**
+   * Tracks whether the HorizontalScroll section is currently intersecting
+   * a specific viewport region.
+   *
+   * Used to modify Header behavior (e.g. styling, transparency, or interaction).
+   */
+  const [isOverHorizontalScroll, setIsOverHorizontalScroll] = useState(false);
+
+  /**
+   * Holds a reference to the wrapper element around HorizontalScroll.
+   *
+   * Using a state setter ref pattern allows React to notify us when
+   * the element mounts/unmounts.
+   */
+  const [horizontalScrollElement, setHorizontalScrollElement] =
+    useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!horizontalScrollElement) return;
+
+    /**
+     * IntersectionObserver detects when the HorizontalScroll section
+     * enters/leaves a custom viewport threshold.
+     *
+     * rootMargin explanation:
+     * - "0px 0px -100% 0px" effectively shifts the bottom boundary up,
+     *   so the section is considered "visible" earlier/later depending on layout.
+     */
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        console.log("HorizontalScroll visible:", entry.isIntersecting);
+
+        setIsOverHorizontalScroll(entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0,
+        rootMargin: "0px 0px -100% 0px",
+      }
+    );
+
+    observer.observe(horizontalScrollElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [horizontalScrollElement]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main>
+      {/**
+       * IntroContentGate ensures the intro animation completes
+       * before rendering the main content.
+       */}
+      <IntroContentGate>
+        {/**
+         * Header reacts to scroll state (specifically HorizontalScroll visibility).
+         * This enables contextual UI changes like blending with background sections.
+         */}
+        <Header isOverHorizontalScroll={isOverHorizontalScroll} />
+
+        {/**
+         * ScrollReveal wraps sections that should animate into view.
+         * Sections that require immediate visibility or custom animation are left unwrapped.
+         */}
+        <ScrollReveal>
+          <Hero />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <Logos />
+        </ScrollReveal>
+
+        {/**
+         * These sections are not wrapped because:
+         * - ScrollReveal is used inside the component for more granular control
+         */}
+        <HowItWorks />
+        <WorkGrid />
+
+        {/**
+         * HorizontalScroll is wrapped in a div so we can attach a ref
+         * for IntersectionObserver tracking.
+         */}
+        <div ref={setHorizontalScrollElement} className="relative">
+          <HorizontalScroll />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        <ScrollReveal>
+          <Features />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <Testimonials />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <Pricing />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <Blog />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <FAQ />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <Footer />
+        </ScrollReveal>
+      </IntroContentGate>
+    </main>
   );
 }

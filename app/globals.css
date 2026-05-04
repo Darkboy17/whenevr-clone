@@ -1,26 +1,881 @@
+/* ============================================
+   Global CSS with Tailwind & Custom Styles
+   ============================================ */
+
+/* 1. Tailwind Directives */
 @import "tailwindcss";
 
+/* 2. Global CSS Variables (Light Theme) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f0f0f0;
+  --foreground: #000000;
+  --surface: #f8f8f8;
+  --muted: #7c7c7c;
+  --line: rgba(0, 0, 0, 0.08);
 }
 
+/* 3. Tailwind Theme Extension */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Inter", "Inter Placeholder", Arial, sans-serif;
+  --font-mono: "Fragment Mono", "Fragment Mono Placeholder", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 4. Custom Fonts */
+@font-face {
+  font-family: "Inter";
+  src: url("/whenevr-assets/fonts/Inter-400.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
 }
 
+@font-face {
+  font-family: "Inter";
+  src: url("/whenevr-assets/fonts/Inter-500.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/whenevr-assets/fonts/Inter-600.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/whenevr-assets/fonts/Inter-700.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("/whenevr-assets/fonts/SourceSerif4-Italic-600.woff2") format("woff2");
+  font-display: swap;
+  font-style: italic;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Fragment Mono";
+  src: url("/whenevr-assets/fonts/FragmentMono-400.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* 5. Base Element Styles */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", "Inter Placeholder", Arial, sans-serif;
+  font-feature-settings: "salt", "kern", "cv05", "cv11", "ccmp";
+  text-rendering: geometricPrecision;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* 6. Selection Styling */
+::selection {
+  background: #000;
+  color: #fff;
+}
+
+/* 7. Image & Details Reset */
+img {
+  display: block;
+}
+
+details>summary {
+  list-style: none;
+}
+
+details>summary::-webkit-details-marker {
+  display: none;
+}
+
+/* 8. Reusable Component Classes (Tailwind Layers) */
+@layer components {
+
+  /* Page container with responsive max-width */
+  .container-page {
+    width: min(100% - 24px, 1180px);
+    margin-inline: auto;
+  }
+
+  /* Consistent vertical padding for sections */
+  .section-padding {
+    padding-block: clamp(72px, 9vw, 132px);
+  }
+
+  /* Heading styles with responsive font sizes */
+  .heading-xl {
+    font-size: clamp(64px, 16vw, 214px);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 0.82;
+  }
+
+  .heading-lg {
+    font-size: clamp(42px, 7vw, 82px);
+    font-weight: 600;
+    letter-spacing: -0.07em;
+    line-height: 1.03;
+  }
+
+  .heading-md {
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 600;
+    letter-spacing: -0.065em;
+    line-height: 1.02;
+  }
+
+  /* Serif italic utility for logo and emphasis */
+  .logo-serif,
+  .serif-italic {
+    font-family: "Source Serif 4", "Source Serif 4 Placeholder", serif;
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -0.08em;
+  }
+
+  /* Typography fine-tuning for Framer */
+  .framer-text-features {
+    font-family: "Inter", "Inter Variable", "Inter Placeholder", sans-serif;
+    font-variant-numeric: proportional-nums;
+    font-feature-settings: "tnum" 0, "lnum" 1;
+    font-optical-sizing: auto;
+  }
+
+  /* Progressive blur effect for headers (rotated mask) */
+  .header-progressive-blur {
+    height: 74px;
+    overflow: hidden;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    -webkit-mask: linear-gradient(#0000 0%, #000 50%);
+    mask: linear-gradient(#0000 0%, #000 50%);
+    transform: rotate(180deg);
+    transform-origin: center;
+  }
+
+  /* Monospace label style */
+  .mono-label {
+    font-family: "Fragment Mono", "Fragment Mono Placeholder", monospace;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 1;
+    color: var(--muted);
+  }
+
+  /* Card with border, radius and background */
+  .card {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  /* Interactive pill button with hover animation */
+  .pill {
+    display: inline-flex;
+    min-height: 35px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 999px;
+    background: rgba(248, 248, 248, 0.88);
+    padding: 0 16px;
+    color: #000;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    transition:
+      transform 240ms ease,
+      background-color 240ms ease,
+      border-color 240ms ease;
+  }
+
+  .pill:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 0, 0, 0.18);
+    background: #fff;
+  }
+
+  /* Media frame for images/videos */
+  .media-frame {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    padding: 10px;
+  }
+
+  .media-frame img {
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+
+  /* Marquee animation base */
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 80s linear infinite;
+  }
+
+  .marquee:hover {
+    animation-play-state: paused;
+  }
+
+  /* Hero ticker (also uses marquee-like scroll) */
+  .hero-ticker-track {
+    animation: hero-ticker-scroll 80s linear infinite;
+    animation-delay: -40s;
+    animation-fill-mode: both;
+  }
+
+  .hero-ticker-track:hover {
+    animation-play-state: paused;
+  }
+
+  /* Logos marquee */
+  .logos-ticker-track {
+    animation: logos-ticker-scroll 50s linear infinite;
+  }
+
+  .logos-ticker-track:hover {
+    animation-play-state: paused;
+  }
+
+  /* Scroll reveal animations – base hidden state */
+  .scroll-reveal {
+    opacity: 0;
+    transition:
+      opacity 1800ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1800ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Directional variants for scroll reveal */
+  .scroll-reveal-up {
+    transform: translateY(40px);
+  }
+
+  .scroll-reveal-down {
+    transform: translateY(-40px);
+  }
+
+  .scroll-reveal-left {
+    transform: translateX(40px);
+  }
+
+  .scroll-reveal-right {
+    transform: translateX(-40px);
+  }
+
+  /* Visible state toggled by JS */
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  /* Staggered word reveal for client headings */
+  .client-heading-word {
+    display: inline-block;
+    opacity: 0.001;
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+    transform: translateY(48px);
+    transition:
+      opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 1000ms cubic-bezier(0.16, 1, 0.3, 1),
+      -webkit-filter 1000ms cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--client-heading-word-delay, 0ms);
+  }
+
+  .client-heading.is-visible .client-heading-word {
+    opacity: 1;
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    transform: none;
+  }
+
+  /* Pricing price character 3D reveal */
+  .pricing-price-value {
+    display: inline-block;
+    white-space: nowrap;
+    perspective: 400px;
+  }
+
+  .pricing-price-character {
+    display: inline-block;
+    opacity: 0.001;
+    transform: translateX(0) translateY(0) scale(1) rotate(0deg) rotateX(0deg) rotateY(90deg) skewX(0deg) skewY(0deg);
+    transform-origin: 50% 50%;
+    backface-visibility: hidden;
+    animation: pricing-price-character 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--pricing-price-character-delay, 0ms);
+  }
+
+  /* Service marquee tracks */
+  .how-service-track {
+    animation: how-service-scroll 50s linear infinite;
+  }
+
+  .how-service-track-reverse {
+    animation-direction: reverse;
+    animation-delay: -50s;
+  }
+
+  /* How-it-works request icon (animated send button) */
+  .how-request-icon {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    width: 85px;
+    height: 85px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #000;
+    box-shadow: 0 12px 37.3px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(4px);
+  }
+
+  .how-request-icon:focus-visible {
+    outline: none;
+  }
+
+  .how-request-logo {
+    position: absolute;
+    left: 16px;
+    top: 24.5px;
+    width: 53px;
+    height: 36px;
+    background-position: center;
+    background-size: cover;
+    -webkit-filter: invert(1) blur(0);
+    filter: invert(1) blur(0);
+    transition:
+      left 300ms cubic-bezier(0.44, 0, 0.56, 1),
+      top 300ms cubic-bezier(0.44, 0, 0.56, 1),
+      -webkit-filter 300ms cubic-bezier(0.44, 0, 0.56, 1),
+      filter 300ms cubic-bezier(0.44, 0, 0.56, 1);
+  }
+
+  .how-request-send {
+    position: absolute;
+    left: -49px;
+    top: 87px;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    color: #fff;
+    filter: blur(5px);
+    transition:
+      left 300ms cubic-bezier(0.44, 0, 0.56, 1),
+      top 300ms cubic-bezier(0.44, 0, 0.56, 1),
+      filter 300ms cubic-bezier(0.44, 0, 0.56, 1);
+  }
+
+  /* Active/hover state for request icon */
+  .how-request-icon:hover .how-request-logo,
+  .how-request-icon:focus-visible .how-request-logo,
+  .how-request-icon-active .how-request-logo {
+    left: 82px;
+    top: -50px;
+    -webkit-filter: invert(1) blur(5px);
+    filter: invert(1) blur(5px);
+  }
+
+  .how-request-icon:hover .how-request-send,
+  .how-request-icon:focus-visible .how-request-send,
+  .how-request-icon-active .how-request-send {
+    left: 18.5px;
+    top: 18.5px;
+    filter: blur(0);
+  }
+
+  /* Folder 3D hover effect */
+  .how-folder {
+    width: 238px;
+    height: 190px;
+    perspective: 2500px;
+    transform-style: preserve-3d;
+    overflow: visible;
+  }
+
+  .how-folder-back {
+    position: relative;
+    width: 238px;
+    height: 190px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: linear-gradient(176deg, #f0f0f0 0%, #dcdcdc 100%);
+    transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .how-folder-front {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    width: 238px;
+    height: 147px;
+    transform: perspective(2500px) rotateX(0deg);
+    transform-origin: 50% 100%;
+    transform-style: preserve-3d;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid #fff;
+    border-radius: 12px;
+    background: #f0f0f0;
+    transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .how-folder:hover .how-folder-front {
+    transform: perspective(2500px) rotateX(-65deg);
+  }
+
+  .how-folder-logo {
+    width: 54px;
+    height: 36px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+  }
+
+  /* Folder images with staggered transforms on hover */
+  .how-folder-image {
+    position: absolute;
+    top: 35px;
+    left: 34px;
+    z-index: 1;
+    width: 170px;
+    height: 120px;
+    user-select: none;
+    overflow: hidden;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    background-position: center top;
+    background-size: cover;
+    pointer-events: none;
+    box-shadow: 0 12px 37.3px rgba(0, 0, 0, 0.08);
+    transform-origin: 50% 50%;
+    transition:
+      top 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      left 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .how-folder-image-1 {
+    transform: rotate(6deg);
+  }
+
+  .how-folder-image-2 {
+    left: calc(49.5798% - 85px);
+    transform: rotate(-4deg);
+  }
+
+  .how-folder-image-3 {
+    transform: none;
+  }
+
+  .how-folder:hover .how-folder-image-1 {
+    top: calc(11.0526% - 60px);
+    left: -29px;
+    transform: rotate(-20deg);
+  }
+
+  .how-folder:hover .how-folder-image-2 {
+    top: -20px;
+    transform: rotate(-4deg);
+  }
+
+  .how-folder:hover .how-folder-image-3 {
+    top: calc(11.0526% - 60px);
+    left: calc(85.2941% - 85px);
+    transform: rotate(19deg);
+  }
+
+  /* Light overlay that moves on hover */
+  .how-folder-light {
+    position: absolute;
+    top: calc(52.5% - 71px);
+    left: calc(-15.8824% - 27px);
+    width: 54px;
+    height: 142px;
+    overflow: hidden;
+    background: linear-gradient(148deg, #a3a3a3 0%, #8a8a8a 100%);
+    opacity: 0.22;
+    filter: blur(5px);
+    transition:
+      left 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      right 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .how-folder:hover .how-folder-light {
+    left: auto;
+    right: -56px;
+  }
+
+  /* Subtle noise texture overlay */
+  .noise {
+    position: relative;
+  }
+
+  .noise::after {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    content: "";
+    opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.55) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.35) 1px, transparent 1px);
+    background-size: 18px 18px;
+    mix-blend-mode: multiply;
+  }
+
+  /* Load introduction overlay animation */
+  .load-introduction {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .load-introduction::before {
+    content: none;
+  }
+
+  .load-introduction-mark-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: min-content;
+    height: min-content;
+    color: #000;
+    transform: translate(-50%, -50%);
+    animation: load-introduction-logo 900ms cubic-bezier(0.96, -0.02, 0.38, 1.01) 1500ms both;
+  }
+
+  .load-introduction-word {
+    user-select: none;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.08em;
+  }
+
+  .load-introduction-letter {
+    display: inline-block;
+    opacity: 0.001;
+    filter: blur(10px);
+    transform: translateY(300px);
+    animation: load-introduction-letter 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .load-introduction-registered {
+    display: inline-block;
+    margin-left: 0.08em;
+    font-family: "Inter", "Inter Placeholder", Arial, sans-serif;
+    font-size: 0.375em;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1;
+    opacity: 0.001;
+    filter: blur(64px);
+    transform: translateY(300px);
+    vertical-align: super;
+    animation: load-introduction-registered 1000ms cubic-bezier(0.16, 1, 0.3, 1) 700ms both;
+  }
+}
+
+/* =========================
+   Generic Marquee Animations (first definition)
+   ========================= */
+@keyframes marquee {
+  0% {
+    transform: translateX(10%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes how-marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes how-marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Utility marquee classes (first set) */
+.marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.how-marquee {
+  animation: how-marquee 18s linear infinite;
+}
+
+.how-marquee-reverse {
+  animation: how-marquee-reverse 18s linear infinite;
+}
+
+/* =========================
+   Overriding marquee keyframe (later duplicate)
+   ========================= */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================
+   Specific Animation Keyframes
+   ========================= */
+@keyframes hero-ticker-scroll {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pricing-ticker-scroll {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-33.3333%);
+  }
+}
+
+@keyframes pricing-price-character {
+  0% {
+    opacity: 0.001;
+    transform: translateX(0) translateY(0) scale(1) rotate(0deg) rotateX(0deg) rotateY(90deg) skewX(0deg) skewY(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes logos-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-1436px);
+  }
+}
+
+@keyframes how-service-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes load-introduction-logo {
+  0% {
+    filter: blur(0);
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    filter: blur(24px);
+    top: -98px;
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes load-introduction-letter {
+  0% {
+    opacity: 0.001;
+    filter: blur(10px);
+    transform: translateY(300px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes load-introduction-registered {
+  0% {
+    opacity: 0.001;
+    filter: blur(64px);
+    transform: translateY(300px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   Additional "How It Works" Marquee Animations
+   ========================= */
+@keyframes howMarquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes howMarqueeReverse {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes projectMobileMarquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Utility classes using the above keyframes */
+.project-mobile-marquee {
+  animation: projectMobileMarquee 45s linear infinite;
+}
+
+.animate-howMarquee {
+  animation: howMarquee 50s linear infinite;
+}
+
+.animate-howMarqueeReverse {
+  animation: howMarqueeReverse 50s linear infinite;
+}
+
+/* =========================
+   Accessibility: Reduced Motion
+   ========================= */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =========================
+   Responsive Pricing Track
+   ========================= */
+/* Below 1200px: horizontal scrolling */
+@media (max-width: 1199px) {
+  .pricing-track {
+    flex-direction: row;
+    width: max-content;
+    height: 100%;
+    animation: pricingScrollX 40s linear infinite reverse;
+  }
+
+  @keyframes pricingScrollX {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(calc(-100% / 3), 0, 0);
+    }
+  }
+}
+
+/* 1200px and above: vertical scrolling */
+@media (min-width: 1200px) {
+  .pricing-track {
+    flex-direction: column;
+    width: 100%;
+    height: max-content;
+    animation: pricingScrollY 40s linear infinite;
+  }
+
+  @keyframes pricingScrollY {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(0, calc(-100% / 3), 0);
+    }
+  }
 }
