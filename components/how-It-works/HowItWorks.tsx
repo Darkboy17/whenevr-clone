@@ -61,7 +61,7 @@ export default function HowItWorks() {
                     <StepCard
                         framerName="Step 3"
                         title="Receive"
-                        description="Your design is delivered..."
+                        description="Your design is delivered in a few business days. Simple, fast, and ready to use."
                         overflow="visible"
                         className="min-[810px]:col-span-2 min-[1200px]:col-span-1"
                     >
