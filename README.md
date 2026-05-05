@@ -128,10 +128,8 @@ images: {
 
 ## 📌 Live Demo
 
-Add your deployed link here:
-```
+
 https://whenevr-clone-alpha.vercel.app/
-```
 
 ---
 
